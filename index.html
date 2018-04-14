@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Curso Javascript Completo 2018</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <script>
+
+    </script>
+
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="col-md-12">
+            <h1>Curso Javascript Completo 2018</h1>
+            <hr>
+            <form id="form-include">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="name">Name</label>
+                        <input type="text" data-name="name" class="form-control" id="name" placeholder="Name" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="age">Age</label>
+                        <input type="text" data-name="age" class="form-control" id="age" placeholder="Age" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="city">City</label>
+                        <input type="text" data-name="city" class="form-control" id="city" placeholder="City" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Include</button>
+            </form>
+
+
+            <table class="table table-hover" style="margin-top: 35px;">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">City</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            window.addEventListener('DOMContentLoaded', function () {
+                var $formInclude = document.forms['form-include'];
+                var $formInput = document.querySelectorAll('input');
+                var $table = document.querySelector('table');
+                var $tBody = $table.querySelector('tbody');
+
+                var arrUser = [];
+                var user;
+                var id = null;
+
+                $formInclude.addEventListener('submit', formSubmit);
+
+                function formSubmit(e) {
+                    e.preventDefault();
+
+                    var element = e.target.elements;
+                    var name, age, city;
+                    id ? id++ : id = 1;
+
+                    for (var x = 0; x < $formInput.length; x++) {
+                        var dataName = $formInput[x].dataset.name;
+                        var dataValue = $formInput[x].value;
+
+                        if (dataName === 'name') {
+                            name = dataValue;
+                        }
+
+                        if (dataName === 'age') {
+                            age = dataValue;
+                        }
+
+                        if (dataName === 'city') {
+                            city = dataValue;
+                        }
+                    }
+
+                    user = new User(id, name, age, city);
+                    arrUser.push(user);
+
+                    createTr(arrUser[id - 1]);
+                    $formInclude.reset();
+                }
+
+                function User(id, name, age, city) {
+                    this.id = id;
+                    this.name = name;
+                    this.age = age;
+                    this.city = city;
+                }
+
+                function createTr(arr) {
+                    var tr = document.createElement('tr');
+                    var th_id = document.createElement('th');
+                    th_id.setAttribute('scope', 'row');
+
+                    var td_name = document.createElement('td');
+                    var td_age = document.createElement('td');
+                    var td_city = document.createElement('td');
+                    var th_id_text, td_name_text, td_age_text, td_city_text;
+
+                    th_id.appendChild(document.createTextNode(arr.id));
+                    td_name.appendChild(document.createTextNode(arr.name));
+                    td_age.appendChild(document.createTextNode(arr.age));
+                    td_city.appendChild(document.createTextNode(arr.city));
+
+                    tr.appendChild(th_id);
+                    tr.appendChild(td_name);
+                    tr.appendChild(td_age);
+                    tr.appendChild(td_city);
+
+                    $tBody.appendChild(tr);
+                }
+            });
+        })();
+    </script>
+
+</body>
+
+</html>
