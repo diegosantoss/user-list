@@ -8,18 +8,17 @@
     var $formInput = document.querySelectorAll("input");
     var $table = document.querySelector("table");
     var $tBody = $table.querySelector("tbody");
-
+    var $formUpdate = document.forms["form-update"];
 
     //define local vars
-    var arrUser = [];
-    var user;
+    var allUsers = [];
+    var newUser;
     var id = null;
 
     $formInclude.addEventListener("submit", formInclude);
-    
-    var $formUpdate = document.forms["form-update"];
     $formUpdate.addEventListener("submit", formUpdate);
 
+    //include new user
     function formInclude(e) {
       e.preventDefault();
 
@@ -35,13 +34,13 @@
       id ? id++ : (id = 1);
 
       //sending params to new function obj
-      user = new User(id, elements.name.value, elements.age.value, elements.city.value);
+      newUser = new User(id, elements.name.value, elements.age.value, elements.city.value);
 
       //add user obj to array
-      arrUser.push(user);
+      allUsers.push(newUser);
 
       //only new position in array
-      updateContent(arrUser);
+      updateContent(allUsers);
 
       addEvent();
 
@@ -49,15 +48,8 @@
       $formInclude.reset();
     }
 
+    //add events
     function addEvent(){
-
-      // var $formUpdate = document.forms["form-update"];
-    
-      // if(!!$formUpdate){
-      //   $formUpdate.addEventListener("submit", formUpdate);
-      // }
-
-
       var $editUser = document.querySelectorAll('.edit-user');
       var $removeUser = document.querySelectorAll('.remove-user');
 
@@ -70,26 +62,29 @@
       }
     }
 
+    //editing some user
     function clickEdit(e){
       e.preventDefault();
       var editId = this.getAttribute('id');
-      updateContent(arrUser, editId);
+      updateContent(allUsers, editId);
     }
 
+    //remove user
     function clickRemove(e){
       e.preventDefault();
       var removeId = this.getAttribute('id');
-      var arrFilter = arrUser.filter(data => data.id != removeId);
+      var filterUser = allUsers.filter(data => data.id != removeId);
 
-      arrUser = arrFilter;
-      updateContent(arrUser);
+      allUsers = filterUser;
+      updateContent(allUsers);
     }
 
+    //updating some user
     function formUpdate(e) {
       e.preventDefault();
       var elements = e.target.elements;
       var updateId;
-      var dataId = [...elements].filter(d => d.tagName === 'BUTTON');
+      var dataId = [...elements].filter(data => data.tagName === 'BUTTON');
  
       dataId.forEach(data => {
         if(data.getAttribute('type') === 'submit'){
@@ -99,7 +94,7 @@
 
       updateId = parseInt(updateId, 10);
 
-      arrUser.forEach(data => {
+      allUsers.forEach(data => {
         if(data.id === updateId){
           data.name = elements.name.value;
           data.age = elements.age.value;
@@ -107,7 +102,7 @@
         }
       });
 
-      updateContent(arrUser);
+      updateContent(allUsers);
     }
 
     //create user obj
@@ -160,6 +155,7 @@
       return rowContent;
     }
 
+    //creating dom to edit by params
     function createRowEdit(data){
       var rowContent =
           '<tr class="row" id="' + data.id + '">' +
