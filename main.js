@@ -114,11 +114,11 @@
     }
 
     // update table tr
-    function updateContent(arr, id){
+    function updateContent(usr, id){
       var content = '';
       id = parseInt(id, 10);
 
-      arr.forEach(data => {
+      usr.forEach(data => {
         if(data.id === id){
           content += createRowEdit(data);
         } else {
